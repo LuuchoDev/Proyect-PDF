@@ -8,7 +8,7 @@ Una aplicación web simple y elegante que permite a los usuarios subir múltiple
 
 ## 📸 Captura de Pantalla
 
-![Vista Previa](https://via.placeholder.com/800x400?text=Aquí+va+una+captura+de+tu+página+web)
+![Vista Previa](![alt text](image.png))
 *(Sugerencia: Toma una captura de tu página web y reemplaza el link de arriba)*
 
 ## 🚀 Características
