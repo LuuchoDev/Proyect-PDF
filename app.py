@@ -1,5 +1,5 @@
 import os
-from flask import flash, render_template, request, send_file
+from flask import Flask, render_template, request, send_file
 from PIL import Image
 import io
 
