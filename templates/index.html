@@ -5,61 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unir Imágenes a PDF</title>
     <style>
+        /* 1. Estilos Generales */
         body {
-            font-family: Arial, sans-serif;
-            display: grid;
-            place-items: center;
-            min-height: 90vh;
-            background-color: #f4f4f4;
-        }
-        #drop-zone {
-            width: 500px;
-            height: 300px;
-            border: 4px dashed #ccc;
-            border-radius: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Fondo con degradado moderno */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        /* 2. La tarjeta contenedora */
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Sombra suave */
+            width: 90%;
+            max-width: 600px;
             text-align: center;
-            font-size: 1.2em;
+        }
+
+        h1 {
+            color: #444;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        p.subtitle {
             color: #777;
-            transition: all 0.3s ease;
+            margin-bottom: 2rem;
         }
-        /* Estilo cuando arrastramos algo sobre la zona */
+
+        /* 3. Zona de Arrastrar y Soltar (Drop Zone) */
+        #drop-zone {
+            border: 3px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 3rem 2rem;
+            background-color: #f7fafc;
+            cursor: pointer;
+            transition: all 0.3s ease; /* Animación suave */
+            position: relative;
+        }
+
+        /* Icono simulado con texto */
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Estado cuando arrastramos algo encima */
         #drop-zone.dragover {
-            border-color: #007bff;
-            background-color: #f0f8ff;
-            color: #007bff;
+            background-color: #ebf4ff;
+            border-color: #667eea;
+            transform: scale(1.02); /* Efecto de "pop" */
         }
+
         #file-list {
-            margin-top: 20px;
-            font-weight: bold;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: #4a5568;
         }
+
+        /* 4. El Botón */
+        button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+        }
+
+        button:hover {
+            background-color: #5a67d8;
+        }
+        
+        button:disabled {
+            background-color: #cbd5e0;
+            cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body>
 
-    <div>
-        <h1>Arrastra y suelta tus imágenes aquí</h1>
+    <div class="container">
+        <h1>Convertidor de Imágenes a PDF</h1>
+        <p class="subtitle">Organiza tus fotos y descárgalas en un solo documento</p>
+
         <div id="drop-zone">
-            Suelta las imágenes (JPG, PNG) aquí
+            <span class="icon">📂</span>
+            <strong>Arrastra tus imágenes aquí</strong><br>
+            <span style="font-size: 0.9rem; color: #888;">o suelta archivos JPG / PNG</span>
         </div>
-        <p id="file-list">Archivos subidos: 0</p>
-        <button id="submit-button" style="display:none;" disabled>Generando PDF...</button>
+
+        <p id="file-list">Archivos seleccionados: 0</p>
+        
+        <button id="submit-button" style="display:none;" disabled>
+            Generar PDF 🚀
+        </button>
     </div>
 
     <script>
-        // Obtenemos los elementos del HTML
         const dropZone = document.getElementById('drop-zone');
         const fileListDisplay = document.getElementById('file-list');
         const submitButton = document.getElementById('submit-button');
-
-        // Esta lista guardará los archivos que el usuario suelte
         let droppedFiles = [];
 
-        // --- Eventos de "Arrastrar y Soltar" ---
-
-        // Prevenimos el comportamiento por defecto del navegador (que es abrir la imagen)
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
         });
@@ -69,92 +131,80 @@
             e.stopPropagation();
         }
 
-        // Añadimos la clase 'dragover' para el efecto visual
         ['dragenter', 'dragover'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
         });
 
-        // Quitamos la clase 'dragover'
         ['dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
         });
 
-        // --- El evento principal: "Drop" (Soltar) ---
-
         dropZone.addEventListener('drop', handleDrop, false);
 
         function handleDrop(e) {
-            // Obtenemos la lista de archivos que el usuario soltó
             let dt = e.dataTransfer;
             let files = dt.files;
-
-            // Guardamos los archivos y actualizamos el contador
-            droppedFiles = Array.from(files); // Convertimos la lista de archivos a un Array
-            fileListDisplay.textContent = `Archivos subidos: ${droppedFiles.length}`;
-
-            // Si hay archivos, llamamos a la función para subirlos
-            if (droppedFiles.length > 0) {
-                uploadFiles(droppedFiles);
+            droppedFiles = Array.from(files);
+            
+            if(droppedFiles.length > 0) {
+                fileListDisplay.textContent = `Archivos seleccionados: ${droppedFiles.length}`;
+                // Mostramos el botón pero esperamos click para enviar? 
+                // En tu versión anterior se enviaba automático. 
+                // Vamos a mantener la subida automática para no complicar, 
+                // pero visualmente se ve mejor.
+                uploadFiles(droppedFiles); 
             }
         }
 
-        // --- Función para enviar los archivos al Backend (Python) ---
-
         async function uploadFiles(files) {
-            // Mostramos un mensaje de "Generando..."
-            submitButton.style.display = 'block';
-            dropZone.textContent = 'Procesando...';
+            submitButton.style.display = 'inline-block';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Procesando... ⏳';
+            dropZone.innerHTML = '<span class="icon">⚙️</span> Procesando tus imágenes...';
 
-            // 1. Creamos un objeto FormData (es como un formulario HTML virtual)
             const formData = new FormData();
-            
-            // 2. Añadimos todos los archivos al FormData
-            // La clave 'images' debe ser la misma que usamos en Flask (request.files.getlist('images'))
             files.forEach(file => {
                 formData.append('images', file);
             });
 
             try {
-                // 3. Enviamos los archivos al backend usando 'fetch'
                 const response = await fetch('/generar-pdf', {
                     method: 'POST',
                     body: formData
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Error del servidor: ${response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
-                // 4. Recibimos la respuesta (el PDF)
                 const pdfBlob = await response.blob();
-
-                // 5. Creamos un enlace temporal para descargar el archivo
                 const url = URL.createObjectURL(pdfBlob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'mi_pdf_unido.pdf'; // Nombre del archivo
+                a.download = 'mi_documento_final.pdf';
                 document.body.appendChild(a);
-                a.click(); // Simulamos un clic para que inicie la descarga
+                a.click();
                 
-                // Limpiamos todo
                 a.remove();
                 URL.revokeObjectURL(url);
-                resetUI();
+                
+                // Reset visual
+                setTimeout(() => {
+                   resetUI();
+                }, 1500); // Esperamos un poquito para reiniciar
 
             } catch (error) {
-                console.error('Error al subir archivos:', error);
-                dropZone.textContent = 'Error. Intenta de nuevo.';
+                console.error(error);
+                dropZone.textContent = 'Error al procesar ❌';
                 submitButton.style.display = 'none';
             }
         }
 
         function resetUI() {
             droppedFiles = [];
-            fileListDisplay.textContent = 'Archivos subidos: 0';
+            fileListDisplay.textContent = 'Archivos seleccionados: 0';
             submitButton.style.display = 'none';
-            dropZone.textContent = 'Suelta las imágenes (JPG, PNG) aquí';
+            submitButton.textContent = 'Generar PDF 🚀';
+            dropZone.innerHTML = '<span class="icon">📂</span><strong>Arrastra tus imágenes aquí</strong><br><span style="font-size: 0.9rem; color: #888;">o suelta archivos JPG / PNG</span>';
         }
-
     </script>
 </body>
 </html>
