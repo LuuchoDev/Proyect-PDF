@@ -5,6 +5,7 @@ import io
 
 app = Flask(__name__)
 
+@app.route('/')
 def index():
     """
     Esta función carga la página web principal (nuestro frontend).
@@ -12,6 +13,7 @@ def index():
     """
     return render_template('index.html')
 
+@app.route('/generar-pdf', methods=['POST'])
 def generar_pdf():
     """
     Esta función genera un archivo PDF a partir de una imagen subida por el usuario.
