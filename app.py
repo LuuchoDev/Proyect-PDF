@@ -23,7 +23,7 @@ def generar_pdf():
     lista_imagenes_procesadas = []
     archivos_subidos = request.files.getlist('images')
 
-    if not archivos_subidos():
+    if not archivos_subidos:
         return "No se han subido imágenes.", 400
     
     try:
