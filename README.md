@@ -8,8 +8,8 @@ Una aplicación web simple y elegante que permite a los usuarios subir múltiple
 
 ## 📸 Captura de Pantalla
 
-![Vista Previa](![alt text](image.png))
-*(Sugerencia: Toma una captura de tu página web y reemplaza el link de arriba)*
+![Vista Previa](img/Screenshot_1.png)
+
 
 ## 🚀 Características
 
@@ -51,4 +51,4 @@ Si quieres ejecutar este proyecto en tu computadora local:
 ¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar el diseño o añadir nuevas funciones, siéntete libre de abrir un *issue* o un *pull request*.
 
 ---
-Desarrollado con ❤️ por [Tu Nombre]
+Desarrollado con ❤️ por Luciano Sosa
