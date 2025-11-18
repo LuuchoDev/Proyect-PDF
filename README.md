@@ -30,8 +30,8 @@ Si quieres ejecutar este proyecto en tu computadora local:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/TU_USUARIO/NOMBRE_DEL_REPO.git](https://github.com/TU_USUARIO/NOMBRE_DEL_REPO.git)
-    cd NOMBRE_DEL_REPO
+    git clone [https://github.com/LuuchoDev/Proyect-PDF.git](https://github.com/LuuchoDev/Proyect-PDF.git)
+    cd Proyect-PDF
     ```
 
 2.  **Instalar dependencias:**
