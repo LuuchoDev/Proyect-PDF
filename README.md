@@ -51,4 +51,4 @@ Si quieres ejecutar este proyecto en tu computadora local:
 ¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar el diseño o añadir nuevas funciones, siéntete libre de abrir un *issue* o un *pull request*.
 
 ---
-Desarrollado con ❤️ por Luciano Sosa
+Desarrollado con ❤️ por Lucho
